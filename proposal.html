@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f0f0f0;
+    }
+
+    div {
+      text-align: center;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 16px;
+      padding: 10px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+
+    #yesButton {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    #noButton {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    #noButton:hover {
+      cursor: pointer;
+    }
+
+    video {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      display: none; /* Initially hide the videos */
+    }
+
+    @media only screen and (max-width: 600px) {
+      p {
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      button {
+        font-size: 14px;
+        padding: 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <p>Can I court u, Kate?</p>
+    <button id="yesButton">YES</button>
+    <button id="noButton">No</button>
+    <video id="noVideo" controls>
+      <source src="video/no.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <video id="yesVideo" controls>
+      <source src="video/yes.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <script>
+    let noButtonTexts = ["Pleaseee?","Why naman ganan?", "Payag na?", "Parang baliw!", "OH PLEASEEE!!", "KATEE NAMANN", "Ang sama mo sakin:(", "Bawal ang HINDI", "Perfect partner tayo oh", "Cute mooo", "Pupuntahan kita d'yan tamo!", "Yes na yann", "Kulettt", "Masama daw kapag pinipilit baka pumayag", "Naiiyak ako", "Isang yes lang talaga forever na 'to"];
+    let currentNoButtonTextIndex = 0;
+
+    function playYes(){
+      const yesVideo = document.getElementById('yesVideo');
+      const noButton = document.getElementById('noButton');
+      const noVideo = document.getElementById('noVideo');
+
+      noButton.style.display = 'none';
+      noVideo.pause();
+      noVideo.style.display = 'none';
+      yesVideo.style.display = 'block'; // Display the "YES" video
+      yesVideo.play(); // Play the "YES" video
+     
+    }
+
+    function expandYesButton() {
+      const yesButton = document.getElementById('yesButton');
+      const noButton = document.getElementById('noButton');
+      const noVideo = document.getElementById('noVideo');
+
+      if (yesButton.offsetWidth < 300 || yesButton.offsetHeight < 300) {
+        yesButton.style.width = `${yesButton.offsetWidth + 50}px`;
+        yesButton.style.height = `${yesButton.offsetHeight + 50}px`;
+        yesButton.style.fontSize = `${parseFloat(window.getComputedStyle(yesButton).fontSize) + 20}px`;
+      }
+
+      if (yesButton.offsetWidth >= 300 && yesButton.offsetHeight >= 300) {
+        yesButton.style.width = '300px';
+        yesButton.style.height = '300px';
+        moveNoButton();
+      }
+
+      if (currentNoButtonTextIndex < noButtonTexts.length) {
+        const currentText = noButtonTexts[currentNoButtonTextIndex];
+        console.log("Current Text:", currentText);
+        noButton.innerHTML = currentText;
+        currentNoButtonTextIndex++;
+      } else {
+        noButton.innerHTML = "Still NO? I'll wait for u to say yes. Dahil puro ka 'NO' yan disabled na";
+        noButton.disabled = true;
+        noVideo.style.display = 'block'; // Display the "NO" video
+        noVideo.play(); // Play the "NO" video
+
+      }
+    }
+
+    function moveNoButton() {
+      const noButton = document.getElementById('noButton');
+      const yesButton = document.getElementById('yesButton');
+      const maxX = window.innerWidth - noButton.offsetWidth;
+      const maxY = window.innerHeight - noButton.offsetHeight;
+
+      let randomX, randomY;
+
+      do {
+        randomX = Math.floor(Math.random() * maxX);
+        randomY = Math.floor(Math.random() * maxY);
+      } while (isCollision(randomX, randomY, noButton, yesButton));
+
+      noButton.style.position = 'absolute';
+      noButton.style.left = `${randomX}px`;
+      noButton.style.top = `${randomY}px`;
+    }
+
+    function isCollision(x, y, element1, element2) {
+      const rect1 = element1.getBoundingClientRect();
+      const rect2 = element2.getBoundingClientRect();
+
+      return (
+        x < rect1.right &&
+        x + element1.offsetWidth > rect1.left &&
+        y < rect1.bottom &&
+        y + element1.offsetHeight > rect1.top &&
+        x < rect2.right &&
+        x + element2.offsetWidth > rect2.left &&
+        y < rect2.bottom &&
+        y + element2.offsetHeight > rect2.top
+      );
+    }
+
+    document.getElementById('noButton').addEventListener('click', function() {
+      expandYesButton();
+      // Add any other actions you want to perform when "No" is clicked
+    });
+
+    document.getElementById('yesButton').addEventListener('click', function() {
+      // Add any other actions you want to perform when "Yes" is clicked
+      playYes();
+    });
+  </script>
+</body>
+</html>
