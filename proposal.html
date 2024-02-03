@@ -94,10 +94,12 @@
       const yesVideo = document.getElementById('yesVideo');
       const noButton = document.getElementById('noButton');
       const noVideo = document.getElementById('noVideo');
+      const yesButton = document.getElementById('yesButton');
 
       noButton.style.display = 'none';
       noVideo.pause();
       noVideo.style.display = 'none';
+      yesButton.style.display = 'none';
       yesVideo.style.display = 'block'; // Display the "YES" video
       yesVideo.play(); // Play the "YES" video
      
@@ -108,15 +110,15 @@
       const noButton = document.getElementById('noButton');
       const noVideo = document.getElementById('noVideo');
 
-      if (yesButton.offsetWidth < 300 || yesButton.offsetHeight < 300) {
+      if (yesButton.offsetWidth < 200 || yesButton.offsetHeight < 200) {
         yesButton.style.width = `${yesButton.offsetWidth + 50}px`;
         yesButton.style.height = `${yesButton.offsetHeight + 50}px`;
         yesButton.style.fontSize = `${parseFloat(window.getComputedStyle(yesButton).fontSize) + 20}px`;
       }
 
-      if (yesButton.offsetWidth >= 300 && yesButton.offsetHeight >= 300) {
-        yesButton.style.width = '300px';
-        yesButton.style.height = '300px';
+      if (yesButton.offsetWidth >= 200 && yesButton.offsetHeight >= 200) {
+        yesButton.style.width = '200px';
+        yesButton.style.height = '200px';
         moveNoButton();
       }
 
